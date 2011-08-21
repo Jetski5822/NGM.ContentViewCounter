@@ -1,0 +1,8 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    Style.Require("NGM.ContentViewCounter");
+}
+<div class="user-view-admin">
+  <h3>@T("User Views:")</h3>
+  <span class="views">@Model.TotalViews</span>
+</div>

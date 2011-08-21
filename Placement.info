@@ -1,9 +1,5 @@
 ﻿<Placement>
-    <Place Parts_BlogML_SiteSettings="Content:10"/>
-
-    <Match ContentType="Blog">
-        <Match DisplayType="DetailAdmin">
-            <Place Parts_BlogML_Export="Actions:after"/>
-        </Match>
-    </Match>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_UserView_SummaryAdmin="Content:5"/>
+  </Match>
 </Placement>
