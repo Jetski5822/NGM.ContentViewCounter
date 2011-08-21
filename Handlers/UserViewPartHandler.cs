@@ -26,12 +26,12 @@ namespace NGM.ContentViewCounter.Handlers {
                     if (!_viewCounterServices.HasViewed(part.ContentItem, currentUser.UserName) || settings.AllowMultipleViewsFromSameUserToCount)
                         _viewCounterServices.AddView(part.ContentItem, currentUser.UserName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress);
                 } else if (settings.AllowAnonymousViews) {
-                    if (!_viewCounterServices.HasViewed(part.ContentItem, "Anonymous") || settings.AllowMultipleViewsFromSameUserToCount) {
-                        var anonHostname = _orchardServices.WorkContext.HttpContext.Request.UserHostAddress;
-                        if (!string.IsNullOrWhiteSpace(_orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"]))
-                            anonHostname += "-" + _orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"];
+                    var anonHostname = _orchardServices.WorkContext.HttpContext.Request.UserHostAddress;
+                    if (!string.IsNullOrWhiteSpace(_orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"]))
+                        anonHostname += "-" + _orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"];
 
-                        _viewCounterServices.AddView(part.ContentItem, "Anonymous", anonHostname);
+                    if (!_viewCounterServices.HasViewed(part.ContentItem, "Anonymous" + anonHostname) || settings.AllowMultipleViewsFromSameUserToCount) {
+                        _viewCounterServices.AddView(part.ContentItem, "Anonymous" + anonHostname, anonHostname);
                     }
                 }
             });
