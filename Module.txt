@@ -1,0 +1,12 @@
+﻿Name: Content View Counter
+AntiForgery: enabled
+Author: Nicholas Mayne
+Website: https://github.com/Jetski5822/Content-View-Counter
+Version: 1.0
+OrchardVersion: 1.2.41
+Description: A module to count unique views of a particular content item.
+Features:
+    NGM.ContentViewCounter:
+        Name: Content View Counter
+        Description: A module to count unique views of a particular content item.
+        Category: Content
