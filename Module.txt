@@ -2,7 +2,7 @@
 AntiForgery: enabled
 Author: Nicholas Mayne
 Website: https://github.com/Jetski5822/Content-View-Counter
-Version: 0.8.0
+Version: 0.9.0
 OrchardVersion: 1.2.41
 Description: A module to count unique views of a particular content item.
 Features:
