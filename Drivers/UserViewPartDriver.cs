@@ -1,27 +1,20 @@
-﻿using NGM.ContentViewCounter.Models;
-using NGM.ContentViewCounter.Services;
+﻿using Contrib.Voting.Services;
+using NGM.ContentViewCounter.Models;
 using Orchard.ContentManagement.Drivers;
 
 namespace NGM.ContentViewCounter.Drivers {
     public class UserViewPartDriver : ContentPartDriver<UserViewPart> {
-        private readonly IViewCounterService _viewCounterService;
+        private readonly IVotingService _votingService;
 
-        public UserViewPartDriver(IViewCounterService viewCounterService) {
-            _viewCounterService = viewCounterService;
+        public UserViewPartDriver(IVotingService votingService) {
+            _votingService = votingService;
         }
 
         protected override DriverResult Display(UserViewPart part, string displayType, dynamic shapeHelper) {
-            return Combined(
-                ContentShape(
-                    "Parts_UserView_SummaryAdmin",
-                        () => shapeHelper.Parts_UserView_SummaryAdmin(BuildUserView(part)))
-                );
-        }
+            var resultRecord = _votingService.GetResult(part.ContentItem.Id, "count", "ContentViews");
+            part.TotalViews = resultRecord == null ? 0 : (int)resultRecord.Value;
 
-        private UserViewPart BuildUserView(UserViewPart part) {
-            part.TotalViews = _viewCounterService.TotalViewsFor(part.ContentItem);
-
-            return part;
+            return ContentShape("Parts_UserView_SummaryAdmin", () => shapeHelper.Parts_UserView_SummaryAdmin(ContentPart: part));
         }
     }
 }

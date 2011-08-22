@@ -53,10 +53,8 @@
     <Compile Include="Handlers\UserViewPartHandler.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\UserViewPart.cs" />
-    <Compile Include="Models\UserViewCounterRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
-    <Compile Include="Services\ViewCounterService.cs" />
     <Compile Include="Settings\UserViewTypePartSettings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +81,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contrib.Voting\Contrib.Voting.csproj">
+      <Project>{4DA5F35F-E62C-4B49-B5A8-379503257B3A}</Project>
+      <Name>Contrib.Voting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

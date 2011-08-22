@@ -20,5 +20,11 @@ namespace NGM.ContentViewCounter {
 
             return 1;
         }
+
+        public int UpdateFrom1() {
+            SchemaBuilder.DropTable("UserViewCounterRecord");
+
+            return 2;
+        }
     }
 }

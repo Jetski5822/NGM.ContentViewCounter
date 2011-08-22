@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Linq;
+using Contrib.Voting.Services;
 using NGM.ContentViewCounter.Models;
-using NGM.ContentViewCounter.Services;
 using NGM.ContentViewCounter.Settings;
 using Orchard;
 using Orchard.ContentManagement.Handlers;
 
 namespace NGM.ContentViewCounter.Handlers {
     public class UserViewPartHandler : ContentHandler {
-        private readonly IViewCounterService _viewCounterServices;
+        private readonly IVotingService _votingService;
         private readonly IOrchardServices _orchardServices;
 
-        public UserViewPartHandler(IViewCounterService viewCounterServices,
+        public UserViewPartHandler(IVotingService votingService,
             IOrchardServices orchardServices) {
-            _viewCounterServices = viewCounterServices;
+            _votingService = votingService;
             _orchardServices = orchardServices;
 
             OnGetDisplayShape<UserViewPart>((context, part) => {
@@ -20,22 +21,32 @@ namespace NGM.ContentViewCounter.Handlers {
                 if (!context.DisplayType.Equals(settings.DisplayType, StringComparison.InvariantCultureIgnoreCase))
                     return;
 
-                var currentUser = _orchardServices.WorkContext.CurrentUser;
-
-                if (currentUser != null) {
-                    if (!_viewCounterServices.HasViewed(part.ContentItem, currentUser.UserName) || settings.AllowMultipleViewsFromSameUserToCount)
-                        _viewCounterServices.AddView(part.ContentItem, currentUser.UserName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress);
-                } else if (settings.AllowAnonymousViews) {
-                    var anonHostname = _orchardServices.WorkContext.HttpContext.Request.UserHostAddress;
-                    if (!string.IsNullOrWhiteSpace(_orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"]))
-                        anonHostname += "-" + _orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"];
-
-                    if (!_viewCounterServices.HasViewed(part.ContentItem, "Anonymous" + anonHostname) || settings.AllowMultipleViewsFromSameUserToCount) {
-                        _viewCounterServices.AddView(part.ContentItem, "Anonymous" + anonHostname, anonHostname);
-                    }
-                }
+                RecordView(part, settings);
             });
 
+        }
+
+        private void RecordView(UserViewPart part, UserViewTypePartSettings settings) {
+            var currentUser = _orchardServices.WorkContext.CurrentUser;
+
+            if (currentUser != null) {
+                Vote(currentUser.UserName, part, settings);
+            } else if (settings.AllowAnonymousViews) {
+                var anonHostname = _orchardServices.WorkContext.HttpContext.Request.UserHostAddress;
+                if (!string.IsNullOrWhiteSpace(_orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"]))
+                    anonHostname += "-" + _orchardServices.WorkContext.HttpContext.Request.Headers["X-Forwarded-For"];
+
+                Vote("Anonymous" + anonHostname, part, settings);
+            }
+        }
+
+        private void Vote(string userName, UserViewPart part, UserViewTypePartSettings settings) {
+            var currentVote = _votingService.Get(v => v.ContentItemRecord == part.ContentItem.Record && v.Username == userName).FirstOrDefault();
+
+            if (currentVote != null && settings.AllowMultipleViewsFromSameUserToCount)
+                _votingService.ChangeVote(currentVote, 1);
+            else if (currentVote == null)
+                _votingService.Vote(part.ContentItem, userName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress, 1, "ContentViews");
         }
     }
 }
