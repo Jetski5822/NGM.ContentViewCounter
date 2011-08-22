@@ -44,7 +44,7 @@ namespace NGM.ContentViewCounter.Handlers {
             var currentVote = _votingService.Get(v => v.ContentItemRecord == part.ContentItem.Record && v.Username == userName).FirstOrDefault();
 
             if (currentVote != null && settings.AllowMultipleViewsFromSameUserToCount)
-                _votingService.ChangeVote(currentVote, 1);
+                _votingService.ChangeVote(currentVote, (currentVote.Value + 1));
             else if (currentVote == null)
                 _votingService.Vote(part.ContentItem, userName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress, 1, "ContentViews");
         }
