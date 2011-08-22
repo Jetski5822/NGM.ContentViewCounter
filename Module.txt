@@ -10,3 +10,4 @@ Features:
         Name: Content View Counter
         Description: A module to count unique views of a particular content item.
         Category: Content
+		Dependencies: Contrib.Voting
