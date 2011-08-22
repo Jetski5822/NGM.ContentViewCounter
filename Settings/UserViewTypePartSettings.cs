@@ -48,7 +48,7 @@ namespace NGM.ContentViewCounter.Settings {
             updateModel.TryUpdateModel(model, "UserViewTypePartSettings", null, null);
             builder.WithSetting("UserViewTypePartSettings.DisplayType", model.DisplayType);
             builder.WithSetting("UserViewTypePartSettings.AllowAnonymousViews", model.AllowAnonymousViews.ToString());
-            builder.WithSetting("UserViewTypePartSettings.AllowAnonymousRatings", model.AllowMultipleViewsFromSameUserToCount.ToString());
+            builder.WithSetting("UserViewTypePartSettings.AllowMultipleViewsFromSameUserToCount", model.AllowMultipleViewsFromSameUserToCount.ToString());
 
             yield return DefinitionTemplate(model);
         }
