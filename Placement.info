@@ -1,4 +1,7 @@
 ﻿<Placement>
+  <Match DisplayType="Summary">
+    <Place Parts_UserView_Summary="Content:before.1"/>
+  </Match>
   <Match DisplayType="SummaryAdmin">
     <Place Parts_UserView_SummaryAdmin="Content:5"/>
   </Match>

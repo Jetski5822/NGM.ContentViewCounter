@@ -14,7 +14,8 @@ namespace NGM.ContentViewCounter.Drivers {
             var resultRecord = _votingService.GetResult(part.ContentItem.Id, "sum", "ContentViews");
             part.TotalViews = resultRecord == null ? 0 : (int)resultRecord.Value;
 
-            return ContentShape("Parts_UserView_SummaryAdmin", () => shapeHelper.Parts_UserView_SummaryAdmin(ContentPart: part));
+            return Combined(ContentShape("Parts_UserView_Summary", () => shapeHelper.Parts_UserView_Summary(TotalViews: part.TotalViews)),
+                ContentShape("Parts_UserView_SummaryAdmin", () => shapeHelper.Parts_UserView_SummaryAdmin(TotalViews: part.TotalViews)));
         }
     }
 }

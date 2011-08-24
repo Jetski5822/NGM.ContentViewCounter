@@ -1,0 +1,5 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    Style.Require("NGM.ContentViewCounter");
+}
+<div class="view-count">@T.Plural("1 view", "{0} views", (int)Model.TotalViews)</div>
