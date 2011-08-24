@@ -11,7 +11,7 @@ namespace NGM.ContentViewCounter.Drivers {
         }
 
         protected override DriverResult Display(UserViewPart part, string displayType, dynamic shapeHelper) {
-            var resultRecord = _votingService.GetResult(part.ContentItem.Id, "count", "ContentViews");
+            var resultRecord = _votingService.GetResult(part.ContentItem.Id, "sum", "ContentViews");
             part.TotalViews = resultRecord == null ? 0 : (int)resultRecord.Value;
 
             return ContentShape("Parts_UserView_SummaryAdmin", () => shapeHelper.Parts_UserView_SummaryAdmin(ContentPart: part));
