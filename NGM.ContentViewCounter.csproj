@@ -52,6 +52,7 @@
     <Compile Include="Drivers\UserViewPartDriver.cs" />
     <Compile Include="Handlers\UserViewPartHandler.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\UserViewPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />

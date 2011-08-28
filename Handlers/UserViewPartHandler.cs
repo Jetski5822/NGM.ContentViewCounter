@@ -41,12 +41,15 @@ namespace NGM.ContentViewCounter.Handlers {
         }
 
         private void Vote(string userName, UserViewPart part, UserViewTypePartSettings settings) {
-            var currentVote = _votingService.Get(v => v.ContentItemRecord == part.ContentItem.Record && v.Username == userName).FirstOrDefault();
+            var currentVote = _votingService.Get(vote => 
+                vote.ContentItemRecord == part.ContentItem.Record && 
+                vote.Username == userName && 
+                vote.Dimension == Constants.Dimension).FirstOrDefault();
 
             if (currentVote != null && settings.AllowMultipleViewsFromSameUserToCount)
                 _votingService.ChangeVote(currentVote, (currentVote.Value + 1));
             else if (currentVote == null)
-                _votingService.Vote(part.ContentItem, userName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress, 1, "ContentViews");
+                _votingService.Vote(part.ContentItem, userName, _orchardServices.WorkContext.HttpContext.Request.UserHostAddress, 1, Constants.Dimension);
         }
     }
 }
